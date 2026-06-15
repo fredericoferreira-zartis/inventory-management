@@ -67,6 +67,14 @@ npm install && npm run dev
 - Data: `server/data/*.json`
 - Styles: `client/src/App.vue`
 
+## Coding Standards
+- Always document non-obvious logic changes with comments
+
+## Testing
+- Write unit tests for **new features only** — do not retrofit tests onto pre-existing untested code
+- Place tests under `tests/` organised by feature subfolder: `tests/backend/<feature>/`
+- Use the `backend-api-test` skill when writing or modifying tests in `tests/backend`
+
 ## Design System
 - Colors: Slate/gray (#0f172a, #64748b, #e2e8f0)
 - Status: green/blue/yellow/red
