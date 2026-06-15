@@ -42,8 +42,9 @@
       </div>
     </div>
 
-    <!-- Loading -->
+    <!-- Loading / error -->
     <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
+    <div v-else-if="loadError" class="error">{{ loadError }}</div>
 
     <!-- Recommended Items -->
     <div v-else class="card">
@@ -141,6 +142,7 @@ export default {
     const budget = ref(50000)
 
     const loading = ref(true)
+    const loadError = ref(null)
     const allForecasts = ref([])
     const inventoryMap = ref({})
 
@@ -151,15 +153,17 @@ export default {
     const loadData = async () => {
       try {
         loading.value = true
+        loadError.value = null
         const [forecasts, inventory] = await Promise.all([
           api.getDemandForecasts(),
-          api.getInventory()
+          api.getInventory({ warehouse: selectedLocation.value, category: selectedCategory.value })
         ])
         allForecasts.value = forecasts
         // SKU → inventory item map for O(1) cost lookups
         inventoryMap.value = Object.fromEntries(inventory.map(i => [i.sku, i]))
       } catch (err) {
         console.error('Failed to load restocking data:', err)
+        loadError.value = err.message
       } finally {
         loading.value = false
       }
@@ -239,6 +243,7 @@ export default {
       stepSize,
       budget,
       loading,
+      loadError,
       recommendedItems,
       totalCost,
       remainingBudget,

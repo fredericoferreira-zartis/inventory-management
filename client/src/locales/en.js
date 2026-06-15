@@ -7,6 +7,7 @@ export default {
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
     restocking: 'Restocking',
+    reports: 'Reports',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -340,6 +341,68 @@ export default {
     english: 'English',
     japanese: 'Japanese',
     selectLanguage: 'Select Language'
+  },
+
+  // Purchase Order Modal
+  purchaseOrder: {
+    titleView: 'Purchase Order Details',
+    titleCreate: 'Create Purchase Order',
+    sku: 'SKU',
+    priority: 'Priority',
+    section: {
+      details: 'Purchase Order',
+      newOrder: 'New Purchase Order'
+    },
+    labels: {
+      poId: 'PO ID',
+      status: 'Status',
+      supplier: 'Supplier',
+      quantity: 'Quantity',
+      units: 'units',
+      unitCost: 'Unit Cost',
+      expectedDelivery: 'Expected Delivery'
+    },
+    form: {
+      supplier: 'Supplier Name',
+      supplierPlaceholder: 'Enter supplier name',
+      quantity: 'Quantity (units)',
+      unitCost: 'Unit Cost ($)',
+      expectedDelivery: 'Expected Delivery Date'
+    },
+    totalCost: 'Total Order Cost',
+    close: 'Close',
+    create: 'Create Purchase Order'
+  },
+
+  // Reports
+  reports: {
+    title: 'Reports',
+    subtitle: 'Comprehensive business analytics and performance reports',
+    revenueVsTarget: 'Revenue vs Target',
+    inventoryHealth: 'Inventory Health',
+    healthy: 'Healthy',
+    lowStock: 'Low Stock',
+    critical: 'Critical',
+    items: 'Items',
+    revenue: 'Revenue',
+    target: 'Target',
+    topProducts: 'Top Performing Products',
+    exportCsv: 'Export CSV',
+    table: {
+      product: 'Product',
+      sku: 'SKU',
+      unitsSold: 'Units Sold',
+      revenue: 'Revenue',
+      margin: 'Margin',
+      status: 'Status'
+    },
+    recentActivity: 'Recent Activity',
+    kpi: {
+      totalRevenue: 'Total Revenue',
+      ordersFulfilled: 'Orders Fulfilled',
+      lowStockAlerts: 'Low Stock Alerts',
+      inventoryTurnover: 'Inventory Turnover'
+    }
   },
 
   // Common
