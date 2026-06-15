@@ -5,7 +5,7 @@
         <div class="modal-container" @click.stop>
           <div class="modal-header">
             <h3 class="modal-title">
-              {{ mode === 'view' ? 'Purchase Order Details' : 'Create Purchase Order' }}
+              {{ mode === 'view' ? t('purchaseOrder.titleView') : t('purchaseOrder.titleCreate') }}
             </h3>
             <button class="close-button" @click="close">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -25,23 +25,23 @@
               </div>
               <div class="item-title-section">
                 <h4 class="item-name">{{ backlogItem.item_name }}</h4>
-                <div class="item-sku">SKU: {{ backlogItem.item_sku }}</div>
+                <div class="item-sku">{{ t('purchaseOrder.sku') }}: {{ backlogItem.item_sku }}</div>
               </div>
               <span class="priority-badge" :class="backlogItem.priority">
-                {{ backlogItem.priority }} Priority
+                {{ backlogItem.priority }} {{ t('purchaseOrder.priority') }}
               </span>
             </div>
 
             <!-- View mode: read-only PO details -->
             <template v-if="mode === 'view' && backlogItem.purchase_order">
-              <div class="section-label">Purchase Order</div>
+              <div class="section-label">{{ t('purchaseOrder.section.details') }}</div>
               <div class="info-grid">
                 <div class="info-item">
-                  <div class="info-label">PO ID</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.poId') }}</div>
                   <div class="info-value mono">{{ backlogItem.purchase_order.id }}</div>
                 </div>
                 <div class="info-item">
-                  <div class="info-label">Status</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.status') }}</div>
                   <div class="info-value">
                     <span class="badge" :class="statusClass(backlogItem.purchase_order.status)">
                       {{ backlogItem.purchase_order.status }}
@@ -49,19 +49,19 @@
                   </div>
                 </div>
                 <div class="info-item">
-                  <div class="info-label">Supplier</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.supplier') }}</div>
                   <div class="info-value">{{ backlogItem.purchase_order.supplier }}</div>
                 </div>
                 <div class="info-item">
-                  <div class="info-label">Quantity</div>
-                  <div class="info-value">{{ backlogItem.purchase_order.quantity }} units</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.quantity') }}</div>
+                  <div class="info-value">{{ backlogItem.purchase_order.quantity }} {{ t('purchaseOrder.labels.units') }}</div>
                 </div>
                 <div class="info-item">
-                  <div class="info-label">Unit Cost</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.unitCost') }}</div>
                   <div class="info-value">${{ Number(backlogItem.purchase_order.unitCost).toFixed(2) }}</div>
                 </div>
                 <div class="info-item">
-                  <div class="info-label">Expected Delivery</div>
+                  <div class="info-label">{{ t('purchaseOrder.labels.expectedDelivery') }}</div>
                   <div class="info-value">{{ formatDate(backlogItem.purchase_order.expectedDelivery) }}</div>
                 </div>
               </div>
@@ -69,17 +69,17 @@
 
             <!-- Create mode: form -->
             <template v-else-if="mode === 'create'">
-              <div class="section-label">New Purchase Order</div>
+              <div class="section-label">{{ t('purchaseOrder.section.newOrder') }}</div>
               <form class="po-form" @submit.prevent="submitForm">
                 <div class="form-row">
                   <div class="form-group">
-                    <label class="form-label" for="po-supplier">Supplier Name</label>
+                    <label class="form-label" for="po-supplier">{{ t('purchaseOrder.form.supplier') }}</label>
                     <input
                       id="po-supplier"
                       v-model="form.supplier"
                       type="text"
                       class="form-input"
-                      placeholder="Enter supplier name"
+                      :placeholder="t('purchaseOrder.form.supplierPlaceholder')"
                       required
                     />
                   </div>
@@ -87,7 +87,7 @@
 
                 <div class="form-row two-col">
                   <div class="form-group">
-                    <label class="form-label" for="po-quantity">Quantity (units)</label>
+                    <label class="form-label" for="po-quantity">{{ t('purchaseOrder.form.quantity') }}</label>
                     <input
                       id="po-quantity"
                       v-model.number="form.quantity"
@@ -153,6 +153,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from '../composables/useI18n'
 
 const props = defineProps({
   isOpen: {
@@ -170,6 +171,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close', 'po-created'])
+
+const { t } = useI18n()
 
 // Form state — reset when modal opens or backlogItem changes
 const form = ref({
