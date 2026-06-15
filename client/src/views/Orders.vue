@@ -27,6 +27,46 @@
         </div>
       </div>
 
+      <div v-if="submittedOrders.length > 0" class="card">
+        <div class="card-header">
+          <h3 class="card-title">{{ t('restocking.submittedOrders') }} ({{ submittedOrders.length }})</h3>
+        </div>
+        <div class="table-container">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th class="col-order-number">{{ t('orders.table.orderNumber') }}</th>
+                <th class="col-items">{{ t('orders.table.items') }}</th>
+                <th class="col-value">{{ t('orders.table.totalValue') }}</th>
+                <th class="col-date">{{ t('orders.table.orderDate') }}</th>
+                <th class="col-date">{{ t('restocking.table.leadTime') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in submittedOrders" :key="order.id">
+                <td class="col-order-number"><strong>{{ order.order_number }}</strong></td>
+                <td class="col-items">
+                  <details class="items-details">
+                    <summary class="items-summary">
+                      {{ t('orders.itemsCount', { count: order.items.length }) }}
+                    </summary>
+                    <div class="items-dropdown">
+                      <div v-for="(item, idx) in order.items" :key="idx" class="item-entry">
+                        <span class="item-name">{{ translateProductName(item.name) }}</span>
+                        <span class="item-meta">{{ t('orders.quantity') }}: {{ item.quantity }} @ {{ currencySymbol }}{{ item.unit_price }}</span>
+                      </div>
+                    </div>
+                  </details>
+                </td>
+                <td class="col-value"><strong>{{ currencySymbol }}{{ order.total_value.toLocaleString() }}</strong></td>
+                <td class="col-date">{{ formatDate(order.order_date) }}</td>
+                <td class="col-date">{{ computeLeadTimeDays(order.expected_delivery) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">{{ t('orders.allOrders') }} ({{ orders.length }})</h3>
@@ -133,12 +173,24 @@ export default {
       return orders.value.filter(order => order.status === status)
     }
 
+    const submittedOrders = computed(() =>
+      orders.value.filter(o => o.status === 'Submitted')
+    )
+
+    const computeLeadTimeDays = (expectedDelivery) => {
+      const delivery = new Date(expectedDelivery)
+      const today = new Date()
+      const diff = Math.ceil((delivery - today) / (1000 * 60 * 60 * 24))
+      return diff > 0 ? `${diff} days` : 'Overdue'
+    }
+
     const getOrderStatusClass = (status) => {
       const statusMap = {
         'Delivered': 'success',
         'Shipped': 'info',
         'Processing': 'warning',
-        'Backordered': 'danger'
+        'Backordered': 'danger',
+        'Submitted': 'info'
       }
       return statusMap[status] || 'info'
     }
@@ -161,6 +213,8 @@ export default {
       error,
       orders,
       getOrdersByStatus,
+      submittedOrders,
+      computeLeadTimeDays,
       getOrderStatusClass,
       formatDate,
       currencySymbol,

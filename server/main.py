@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime, timezone
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders
 
 app = FastAPI(title="Factory Inventory Management System")
@@ -120,6 +121,13 @@ class CreatePurchaseOrderRequest(BaseModel):
     expected_delivery_date: str
     notes: Optional[str] = None
 
+class CreateOrderRequest(BaseModel):
+    customer: str
+    items: List[dict]
+    warehouse: Optional[str] = None
+    category: Optional[str] = None
+    expected_delivery: str
+
 # API endpoints
 @app.get("/")
 def root():
@@ -152,6 +160,36 @@ def get_orders(
     filtered_orders = apply_filters(orders, warehouse, category, status)
     filtered_orders = filter_by_month(filtered_orders, month)
     return filtered_orders
+
+@app.post("/api/orders", response_model=Order, status_code=201)
+def create_order(request: CreateOrderRequest):
+    """Create a new restocking order"""
+    existing_ids = [int(o["id"]) for o in orders if str(o.get("id", "")).isdigit()]
+    new_id = str(max(existing_ids, default=0) + 1)
+
+    rst_count = sum(1 for o in orders if o.get("order_number", "").startswith("RST-"))
+    order_number = f"RST-2025-{rst_count + 1:04d}"
+
+    total_value = round(
+        sum(item.get("quantity", 0) * item.get("unit_price", 0) for item in request.items), 2
+    )
+
+    new_order = {
+        "id": new_id,
+        "order_number": order_number,
+        "customer": request.customer,
+        "items": request.items,
+        "status": "Submitted",
+        "order_date": datetime.now(timezone.utc).isoformat(),
+        "expected_delivery": request.expected_delivery,
+        "total_value": total_value,
+        "actual_delivery": None,
+        "warehouse": request.warehouse,
+        "category": request.category,
+    }
+
+    orders.append(new_order)
+    return new_order
 
 @app.get("/api/orders/{order_id}", response_model=Order)
 def get_order(order_id: str):
