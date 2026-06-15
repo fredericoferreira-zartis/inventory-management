@@ -148,7 +148,6 @@
                   v-for="transaction in recentTransactions"
                   :key="transaction.id"
                   class="clickable-row"
-                  @click="handleTransactionClick(transaction)"
                 >
                   <td class="transaction-id">{{ transaction.id.toString().padStart(3, '0') }}</td>
                   <td class="transaction-description">{{ transaction.description }}</td>
@@ -370,11 +369,6 @@ export default {
       }
     }
 
-    // Watch for period filter changes
-    watch([selectedPeriod], () => {
-      // Data will automatically update via computed properties
-    })
-
     const formatCurrency = (value) => {
       return formatCurrencyUtil(value, currentCurrency.value)
     }
@@ -391,13 +385,6 @@ export default {
     const getRevenueBarHeight = (value) => {
       const maxValue = maxRevenueValue.value * 1000
       return (value / maxValue) * 100
-    }
-
-    const formatDate = (dateString) => {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric'
-      })
     }
 
     const formatDateShort = (dateString) => {
@@ -447,11 +434,6 @@ export default {
       return spendingCategoryMap[category] || productCategoryMap[category] || category
     }
 
-    const handleTransactionClick = (transaction) => {
-      console.log('Transaction clicked:', transaction)
-      alert(`Transaction Details:\n\nID: ${transaction.id}\nDescription: ${transaction.description}\nVendor: ${transaction.vendor}\nDate: ${formatDateShort(transaction.date)}\nAmount: $${transaction.amount.toLocaleString()}`)
-    }
-
     const showCostDetail = (monthData) => {
       selectedCostData.value = monthData
       showCostModal.value = true
@@ -477,11 +459,9 @@ export default {
       currencySymbol,
       getBarHeight,
       getRevenueBarHeight,
-      formatDate,
       formatDateShort,
       translateMonth,
       translateCategory,
-      handleTransactionClick,
       showCostModal,
       selectedCostData,
       showCostDetail,

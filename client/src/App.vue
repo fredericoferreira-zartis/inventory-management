@@ -121,8 +121,7 @@ export default {
       },
       {
         path: '/reports',
-        labelKey: null,
-        label: 'Reports',
+        labelKey: 'nav.reports',
         icon: `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 2h7l3 3v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><polyline points="11,2 11,5 14,5"/><line x1="6" y1="9" x2="12" y2="9"/><line x1="6" y1="12" x2="10" y2="12"/></svg>`
       }
     ]

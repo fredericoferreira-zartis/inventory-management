@@ -7,6 +7,7 @@ export default {
     finance: '財務',
     demandForecast: '需要予測',
     restocking: '補充発注',
+    reports: 'レポート',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -340,6 +341,68 @@ export default {
     english: 'English',
     japanese: '日本語',
     selectLanguage: '言語を選択'
+  },
+
+  // Purchase Order Modal
+  purchaseOrder: {
+    titleView: '購買注文詳細',
+    titleCreate: '購買注文を作成',
+    sku: 'SKU',
+    priority: '優先度',
+    section: {
+      details: '購買注文',
+      newOrder: '新規購買注文'
+    },
+    labels: {
+      poId: '注文ID',
+      status: 'ステータス',
+      supplier: 'サプライヤー',
+      quantity: '数量',
+      units: '単位',
+      unitCost: '単価',
+      expectedDelivery: '予定配達日'
+    },
+    form: {
+      supplier: 'サプライヤー名',
+      supplierPlaceholder: 'サプライヤー名を入力',
+      quantity: '数量（単位）',
+      unitCost: '単価（$）',
+      expectedDelivery: '予定配達日'
+    },
+    totalCost: '総注文コスト',
+    close: '閉じる',
+    create: '購買注文を作成'
+  },
+
+  // Reports
+  reports: {
+    title: 'レポート',
+    subtitle: '包括的なビジネス分析とパフォーマンスレポート',
+    revenueVsTarget: '収益 vs 目標',
+    inventoryHealth: '在庫状態',
+    healthy: '正常',
+    lowStock: '在庫少',
+    critical: '危機的',
+    items: 'アイテム',
+    revenue: '収益',
+    target: '目標',
+    topProducts: 'トップパフォーマンス製品',
+    exportCsv: 'CSV エクスポート',
+    table: {
+      product: '製品',
+      sku: 'SKU',
+      unitsSold: '販売数',
+      revenue: '収益',
+      margin: 'マージン',
+      status: 'ステータス'
+    },
+    recentActivity: '最近のアクティビティ',
+    kpi: {
+      totalRevenue: '総収益',
+      ordersFulfilled: '注文処理済み',
+      lowStockAlerts: '在庫不足アラート',
+      inventoryTurnover: '在庫回転率'
+    }
   },
 
   // Common
